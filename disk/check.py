@@ -130,14 +130,18 @@ class Disk(AgentCheck):
         # ENOENT, pop-up a Windows GUI error for a non-ready
         # partition or just hang;
         # and all the other excluded disks
-        return ((Platform.is_win32() and ('cdrom' in part.opts or
-                                          part.fstype == '')) or
-                self._exclude_disk(part.device, part.fstype, part.mountpoint))
+        skip_win = Platform.is_win32() and ('cdrom' in part.opts or part.fstype == '')
+        return skip_win or self._exclude_disk(part.device, part.fstype, part.mountpoint)
 
     def _exclude_disk(self, name, filesystem, mountpoint):
         """
         Return True for disks we don't want or that match regex in the config file
         """
+        self.log.debug('_exclude_disk: {}, {}, {}'.format(name, filesystem, mountpoint))
+
+        # temporary hack for NFS secure mounts
+        mountpoint = mountpoint.split()[0]
+
         name_empty = not name or name == 'none'
 
         # allow empty names if `all_partitions` is `yes` so we can evaluate mountpoints
