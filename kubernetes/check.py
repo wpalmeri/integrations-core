@@ -343,7 +343,7 @@ class Kubernetes(AgentCheck):
         metrics = self.kubeutil.retrieve_metrics()
 
         excluded_labels = instance.get('excluded_labels')
-        kube_labels = self.kubeutil.extract_kube_labels(pods_list, excluded_keys=excluded_labels)
+        kube_labels = self.kubeutil.extract_kube_pod_tags(pods_list, excluded_keys=excluded_labels)
 
         if not metrics:
             raise Exception('No metrics retrieved cmd=%s' % self.metrics_cmd)
@@ -489,6 +489,7 @@ class Kubernetes(AgentCheck):
                 continue
 
             tags = self.kubeutil.extract_event_tags(event)
+            tags.extend(instance.get('tags', []))
 
             title = '{} {} on {}'.format(involved_obj.get('name'), event.get('reason'), node_name)
             message = event.get('message')
