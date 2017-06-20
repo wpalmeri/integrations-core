@@ -9,7 +9,35 @@ Get metrics from ntp service in real time to:
 
 ## Installation
 
-Install the `dd-check-ntp` package manually or with your favorite configuration manager
+To install the check on the agent:
+```
+/opt/datadog-agent/embedded/bin/pip install .
+```
+
+## Development
+
+Create a dedicated virtualenv and follow the instructions in this paragraph
+to work with the check.
+
+To install the check in dev mode:
+```
+pip install -e .[dev]
+```
+
+To run the tests:
+```
+python setup.py test
+```
+
+Once installed, the check is available as:
+```
+import check.ntp
+```
+
+To build the wheel package:
+```
+python setup.py bdist_wheel
+```
 
 ## Configuration
 
