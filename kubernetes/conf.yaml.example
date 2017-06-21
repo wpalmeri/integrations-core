@@ -30,6 +30,12 @@ instances:
   # cAdvisor host
   # host: localhost
 
+  # API server host and port
+  # Autodetected via the KUBERNETES_SERVICE_HOST variable if present
+  #
+  # api_server_host: localhost
+  # api_server_port: 443
+
   # Authentication against the apiserver
   #
   # By default the agent authenticates against the apiserver with its service account bearer token.
@@ -111,6 +117,10 @@ instances:
   # kubelet_client_crt: /path/to/client.crt
   # kubelet_client_key: /path/to/client.key
   #
+  # The agent can also authenticate using a bearer token. Default value is OK inside a pod,
+  # you'd need to customize the path if running directly on the node
+  #
+  # bearer_token_path: /var/run/secrets/kubernetes.io/serviceaccount/token
   #
   # We can define a whitelist of patterns that permit publishing raw metrics.
   # enabled_rates:
